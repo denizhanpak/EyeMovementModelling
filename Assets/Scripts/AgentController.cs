@@ -9,11 +9,21 @@ public class AgentController : MonoBehaviour
     public float maxHeadTurn = 45.0f;
     public float turnSpeed = 0.1f;
     public float fieldOfView = 10f;
+
+    public float Ce = 2.5f;
+    public float Cp = 0.9f;
+    public float R = 0.06f;
+    public float directForce = 0.0026f;
+        
+
     public GameObject tracked = null;
+    
     bool leftTurning = true;
     Transform face;
     Transform leftEye, rightEye;
     Vector3 leftCenter, rightCenter;
+
+    float S = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +37,22 @@ public class AgentController : MonoBehaviour
     void Update()
     {
         
+    }
+
+    float dS(float F, float dF)
+    {
+        float F0 = directForce * F;
+        float rv = -S + Cp * F;
+        rv -= Cp * F0;
+        rv += Ce * Cp * R * dF;
+        rv /= ((Ce+Cp) * R);
+
+        return rv;
+    }
+
+    float CalcS(float F)
+    {
+        return 0f;
     }
 
     void FixedUpdate()
